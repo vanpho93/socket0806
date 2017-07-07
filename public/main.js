@@ -1,4 +1,5 @@
 const socket = io();
+let id;
 
 $('#div-chat').hide();
 
@@ -31,6 +32,29 @@ $('#btnSend').click(() => {
 $('#btnSignUp').click(() => {
     const username = $('#txtUsername').val();
     socket.emit('CLIENT_SIGN_UP', username);
+});
+
+$('#ulUsers').on('click', 'li', function() {
+    id = $(this).attr('id');
+    $('#ulUsers li').removeClass('active');
+    $(this).addClass('active');
+});
+
+$('#btnSendPrivate').click(() => {
+    const message = $('#txtMessage').val();
+    socket.emit('CLIENT_SEND_PRIVATE_MSG', { id, message });
+});
+
+$('#ulRooms li').click(function() {
+    const roomName = $(this).text();
+    socket.emit('CLIENT_JOIN_ROOM', roomName);
+    $('#ulRooms li').removeClass('activeRoom');
+    $(this).addClass('activeRoom');
+});
+
+$('#btnSendRoom').click(() => {
+    const message = $('#txtMessage').val();
+    socket.emit('CLIENT_SEND_ROOM_MSG', message);
 });
 /*
     Neu da ton tai? -> Khong cho dang ky. alert()

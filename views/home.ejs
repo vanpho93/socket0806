@@ -12,6 +12,12 @@
                 flex-direction: row;
                 justify-content: space-between;
             }
+            .active {
+                color: greenyellow;
+            }
+            .activeRoom {
+                color: red;
+            }
         </style>
     </head>
     <body>
@@ -25,12 +31,27 @@
         <div id="div-chat">
             <input type="text" placeholder="Enter your message" id="txtMessage">
             <br><br>
-            <button id="btnSend">Send Message</button>
+            <button id="btnSend">Send All</button>
+            <br>
+            <br>
+            <button id="btnSendPrivate">Send Private</button>
+            <br>
+            <br>
+            <button id="btnSendRoom">Send Room</button>
+            <br>
             <br>
             <div id="div-list">
                 <div>
                     <label>List messages:</label>
                     <ul id="ulMessages"></ul>
+                </div>
+                <div>
+                    <label>List messages:</label>
+                    <ul id="ulRooms">
+                        <li>NODEJS</li>
+                        <li>ANDROID</li>
+                        <li>IOS</li>
+                    </ul>
                 </div>
                 <div>
                     <label>List messages:</label>

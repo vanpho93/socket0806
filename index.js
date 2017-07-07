@@ -35,9 +35,39 @@ io.on('connection', socket => {
         io.emit('NGUOI_DUNG_MOI', user);
     });
 
+    socket.on('CLIENT_SEND_PRIVATE_MSG', msgObject => {
+        const { id, message } = msgObject;
+        socket.to(id).emit('SERVER_SEND_MSG', `*${socket.username}: ${message}`)
+    });
+
+    socket.on('CLIENT_SEND_ROOM_MSG', message => {
+        //Kiem tra
+        socket.to(socket.myRoom).emit('SERVER_SEND_MSG', `#${socket.username}: ${message}`)
+    });
+
+
+    socket.on('CLIENT_JOIN_ROOM', roomName => {
+        if (socket.myRoom) {
+            socket.leave(socket.myRoom, () => {
+                socket.myRoom = roomName;
+                socket.join(roomName);
+            })
+        }
+        socket.myRoom = roomName;
+        socket.join(roomName);
+    });
+
     socket.on('disconnect', () => {
         const index = arrUsers.findIndex(e => e.id === socket.id);
         if(index > -1) arrUsers.splice(index, 1);
         io.emit('NGUOI_DUNG_NGAT_KET_NOI', socket.id);
     });
 });
+
+/*
+    github
+    heroku
+    ten ngay sinh
+    khoa hoc Node0806
+    khoaphamtraining@gmail.com
+*/
