@@ -23,14 +23,21 @@ io.on('connection', socket => {
     // setInterval(() => socket.emit('SERVER_SEND_MSG', Math.random()), 2000);
     socket.on(
         'CLIENT_SEND_MSG', 
-        message => io.emit('SERVER_SEND_MSG', message));
+        message => io.emit('SERVER_SEND_MSG', `${socket.username}: ${message}`));
 
     socket.on('CLIENT_SIGN_UP', username => {
         const isExist = arrUsers.some(e => e.username === username);
         if (isExist) return socket.emit('XAC_NHAN_DANG_KY', false);
+        socket.username = username;
         const user = new User(username, socket.id)
         socket.emit('XAC_NHAN_DANG_KY', arrUsers);
         arrUsers.push(user);
         io.emit('NGUOI_DUNG_MOI', user);
+    });
+
+    socket.on('disconnect', () => {
+        const index = arrUsers.findIndex(e => e.id === socket.id);
+        if(index > -1) arrUsers.splice(index, 1);
+        io.emit('NGUOI_DUNG_NGAT_KET_NOI', socket.id);
     });
 });

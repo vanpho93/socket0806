@@ -4,7 +4,7 @@ $('#div-chat').hide();
 
 socket.on(
     'SERVER_SEND_MSG', 
-    message => $('#ulMessages').append('<li>DA NHAN: ' + message + '</li>')
+    message => $('#ulMessages').append('<li>' + message + '</li>')
 );
 
 socket.on(
@@ -13,13 +13,15 @@ socket.on(
         if (!arrUser) return alert('Username da ton tai!');
         $('#div-chat').show();
         $('#div-sign-up').hide();
-        arrUser.forEach(user => $('#ulUsers').append(`<li>${user.username}</li>`));
+        arrUser.forEach(user => $('#ulUsers').append(`<li id="${user.id}">${user.username}</li>`));
         socket.on(
             'NGUOI_DUNG_MOI', 
-            user => $('#ulUsers').append(`<li>${user.username}</li>`)
+            user => $('#ulUsers').append(`<li id="${user.id}">${user.username}</li>`)
         );
     }
-)
+);
+
+socket.on('NGUOI_DUNG_NGAT_KET_NOI', id => $(`#ulUsers #${id}`).remove());
 
 $('#btnSend').click(() => {
     const message = $('#txtMessage').val();
