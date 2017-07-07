@@ -1,8 +1,10 @@
 const socket = io();
 
+$('#div-chat').hide();
+
 socket.on(
     'SERVER_SEND_MSG', 
-    randomNumber => console.log('DA NHAN: ' + randomNumber)
+    message => $('#ulMessages').append('<li>DA NHAN: ' + message + '</li>')
 );
 
 $('#btnSend').click(() => {
